@@ -1,12 +1,12 @@
 {
-  "name": "sjljs",
-  "version": "1.0.0",
-  "description": "full stack library",
+  "name": "bignano",
+  "version": "1.0.2",
+  "description": "Generic CRUD api",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "sjljrvis",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",

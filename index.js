@@ -1,9 +1,10 @@
 const request = require('request');
 const mongoose = require('mongoose');
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const fs = require('fs');
 
-module.exports = function sjl() {
+module.exports = function bignano() {
 
 	this.settings = arguments[0]; /* First argument has to be settings object for project */
 	this.db = null;
@@ -12,7 +13,7 @@ module.exports = function sjl() {
 
 	this.app = express();
 	this.app.use(bodyParser.json());
-	this.app.use(bodyParser({ urlencoded: true }));
+	//	this.app.use(bodyParser({ urlencoded: true }));
 
 	this.initMiddlewares = () => {
 		arguments[0].middlewares.forEach(element => {
@@ -102,21 +103,45 @@ module.exports = function sjl() {
 		});
 	};
 
+
+	bignano.prototype.getSettings = () => {
+		return this.settings;
+	};
+
+	/* Returning DB instance for custom usage  */
+	bignano.prototype.getDBInstance = () => {
+		return this.db;
+	};
+
+	bignano.prototype.getAppInstance = () => {
+		return this.app;
+	};
+
+	bignano.prototype.getStorageInstance = () => {
+
+	};
+
+	bignano.prototype.fileStorage = (filePath, callback) => {
+		let options = {
+			url: "http://localhost:1111",
+			method: "POST",
+			headers: {
+				"Authorization": "d3779233f9a4a3dbc80b933802df69d8913a5f6acba3fef42d443a3b750974a3"
+			},
+			formData: {
+				file: fs.createReadStream(filePath)
+			}
+		}
+		request(options, (err, response, body) => {
+			callback(body);
+		});
+	};
 	/* Connecting app to mongoDB and registering PORT */
-	sjl.prototype.init = () => {
+	bignano.prototype.init = () => {
 		this.initDB();
 		this.initSchema();
 		this.initPort(this.settings);
 		this.initMiddlewares(this.settings);
 		this.handleExpressRequest();
 	};
-
-	sjl.prototype.getSettings = () => {
-		return this.settings;
-	};
-
-	/* Returning DB instance for custom usage  */
-	sjl.prototype.getDBInstance = () => {
-		return this.db;
-	}
 }
